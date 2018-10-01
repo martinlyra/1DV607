@@ -3,8 +3,6 @@ using _1DV607A2.View.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace _1DV607A2.View.Contexts
 {
@@ -13,24 +11,24 @@ namespace _1DV607A2.View.Contexts
         Type targetType;
 
         int selection = 0;
-        List<TextField> fields;
+        List<TextInputField> fields;
         string errorMessage;
 
         public CreateDataMenu(Type targetType, UserInterface ui) : base(ui)
         {
             this.targetType = targetType;
 
-            fields = new List<TextField>();
+            fields = new List<TextInputField>();
             if (targetType == typeof(MemberData))
             {
-                fields.Add(new TextField("Name"));
-                fields.Add(new TextField("Personal number"));
+                fields.Add(new TextInputField("Name"));
+                fields.Add(new TextInputField("Personal number"));
             }
             else if (targetType == typeof(BoatData))
             {
-                fields.Add(new TextField("Type"));
-                fields.Add(new TextField("Length"));
-                fields.Add(new TextField("Owner's ID"));
+                fields.Add(new TextInputField("Type"));
+                fields.Add(new TextInputField("Length"));
+                fields.Add(new TextInputField("Owner's ID"));
             }
         }
 
@@ -78,7 +76,7 @@ namespace _1DV607A2.View.Contexts
 
             if (errorMessage.Length < 1)
             {
-                ui.DataController.CreateData(targetType, fields.Select(f => f.Value).ToList());
+                ui.DataController.CreateData(targetType, fields.Select(f => f.Value).ToList<object>());
                 ui.SetActiveContext(new MainMenu(ui));
             }
         }

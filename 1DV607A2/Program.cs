@@ -1,9 +1,4 @@
 ﻿using _1DV607A2.View;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace _1DV607A2
 {
@@ -11,7 +6,7 @@ namespace _1DV607A2
     {
         static void Main(string[] args)
         {
-            var ui = new UserInterface();
+            var ui = new SimpleUserInterface();
 
             while (!ui.IsExiting)
             {

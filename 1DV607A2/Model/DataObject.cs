@@ -1,17 +1,25 @@
-﻿using System;
+﻿using _1DV607A2.Controller;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace _1DV607A2.Model
 {
     public abstract class DataObject
     {
-        public DataObject(string id, long timestamp)
+        protected readonly DataController dataController;
+
+        public DataObject(DataController dataController, string id, long timestamp)
         {
+            this.dataController = dataController;
             ID = id;
             Timestamp = timestamp;
+        }
+
+        public virtual void ChangeData(Dictionary<string, object> newData)
+        {
+            if (newData.ContainsKey("id"))
+                ID = (string)newData["id"];
+            if (newData.ContainsKey("timestamp"))
+                Timestamp = (long)newData["timestamp"];
         }
 
         public abstract void Delete();

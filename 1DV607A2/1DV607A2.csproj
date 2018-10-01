@@ -55,6 +55,8 @@
     <Compile Include="View\Contexts\AbstractContext.cs" />
     <Compile Include="View\Contexts\MainMenu.cs" />
     <Compile Include="View\Elements\DataForm.cs" />
+    <Compile Include="View\Elements\ListEntry.cs" />
+    <Compile Include="View\Elements\ListSelectionDialog.cs" />
     <Compile Include="View\Elements\TextField.cs" />
     <Compile Include="View\UserInterface.cs" />
     <Compile Include="View\Contexts\DataViewMenu.cs" />
