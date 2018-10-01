@@ -13,9 +13,10 @@ namespace _1DV607A2.Controller
 
         public DataController()
         {
-            fileController = new DataFileController($"{Environment.CurrentDirectory}/Saved Data");
+            fileController = new DataFileController(this, $"{Environment.CurrentDirectory}/Saved Data");
 
-            dataObjects = fileController.TryLoadAll();
+            dataObjects = new List<DataObject>();
+            fileController.TryLoadAll(ref dataObjects);
         }
 
         public void CreateData(Type type, Dictionary<string, object> args)
@@ -23,7 +24,7 @@ namespace _1DV607A2.Controller
             var time = DateTime.UtcNow.Ticks;
             var id = CalculateHashID(args) * time;
 
-            DataObject data = (DataObject)type.GetConstructors()[0].Invoke(new object[]{ this, id, time });
+            DataObject data = (DataObject)type.GetConstructors()[0].Invoke(new object[]{ this, id.ToString(), time });
 
             if (data != null)
             {
@@ -56,9 +57,9 @@ namespace _1DV607A2.Controller
             return dataObjects.Find(data => { return data.ID == id; });
         }
 
-        public IEnumerable<TResult> RetrieveByQuery<TResult>(Func<DataObject,TResult> selectorFunction)
+        public IEnumerable<DataObject> RetrieveByQuery(Func<DataObject,bool> selectorFunction) 
         {
-            return dataObjects.Select(selectorFunction);
+            return dataObjects.Where(selectorFunction);
         }
 
         private long CalculateHashID(Dictionary<string, object> args)

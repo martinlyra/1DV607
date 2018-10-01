@@ -12,8 +12,11 @@ namespace _1DV607A2.Controller
     {
         string directory;
 
-        public DataFileController(string workingDirectory)
+        DataController dataController;
+
+        public DataFileController(DataController dataController, string workingDirectory)
         {
+            this.dataController = dataController;
             directory = workingDirectory;
         }
 
@@ -27,45 +30,30 @@ namespace _1DV607A2.Controller
             }
         }
 
-        public List<DataObject> TryLoadAll()
+        public void TryLoadAll(ref List<DataObject> objects)
         {
-            List<DataObject> objects = new List<DataObject>();
-
-            var dirs = Directory.GetDirectories(directory);
-            List<string> files = new List<string>();
-
-            foreach (string dir in dirs)
-                files.AddRange(Directory.GetFiles(dir));
-
-            foreach (string file in files)
-            {
-                var serializedString = LoadContents(file);
-
-                var data = serializedString.Split(':');
-                var type = data[0];
-
-                DataObject dataObject = null;
-                if (type == "Member")
+            objects.AddRange(LoadFiles(directory + "/Members",
+                (readData) =>
                 {
-                    var md = new MemberData(data[1], long.Parse(data[2]));
-                    md.Name = data[3];
-                    md.PersonalNumber = data[4];
+                    var res = new MemberData(dataController, readData[1], long.Parse(readData[2]));
+                    res.Name = readData[3];
+                    res.PersonalNumber = readData[4];
 
-                    dataObject = md;
-                }
-                else if (type == "Boat")
+                    return res;
+                }));
+            objects.AddRange(LoadFiles(directory + "/Boats",
+                (readData) =>
                 {
-                    var bd = new BoatData(data[1], long.Parse(data[2]));
-                    bd.Length = int.Parse(data[4]);
+                    var res = new BoatData(dataController, readData[1], long.Parse(readData[2]));
 
-                    dataObject = bd;
-                }
+                    var owner = (MemberData)dataController.RetrieveByID(readData[3]);
+                    owner.RegisterBoat(res);
 
-                if (dataObject != null)
-                    objects.Add(dataObject);
-            }
+                    res.Length = int.Parse(readData[4]);
+                    res.Type = (BoatType)Enum.Parse(typeof(BoatType), readData[5]);
 
-            return objects;
+                    return res;
+                }));
         }
 
         public void DeleteFileFor(DataObject dataObject)
@@ -76,6 +64,31 @@ namespace _1DV607A2.Controller
             var path = $"{directory}/{dataObject.DataType}s/{dataObject.ID}.data";
             if (File.Exists(path))
                 File.Delete(path);
+        }
+
+        private List<DataObject> LoadFiles(string folderPath, Func<string[], DataObject> parser)
+        {
+            var objects = new List<DataObject>();
+            var files = new List<string>();
+            files.AddRange(Directory.GetFiles(folderPath));
+
+            foreach (string file in files)
+            {
+                var serializedString = LoadContents(file);
+
+                var data = serializedString.Split(':');
+
+                var dataObject = parser.Invoke(data);
+
+                if (dataObject != null)
+                    objects.Add(dataObject);
+            }
+            return objects; 
+        }
+
+        private void LoadBoats(string folderPath)
+        {
+
         }
 
         private string LoadContents(string path)

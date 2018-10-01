@@ -22,10 +22,6 @@ namespace _1DV607A2.View
             Delete
         }
 
-        private string selectedID;
-        private ListDisplayMode displayMode;
-        private Exception lastError;
-
         public SimpleUserInterface()
         {
             DataController = new DataController();
@@ -45,7 +41,7 @@ namespace _1DV607A2.View
                     "4. Create member\n" +
                     "5. Create boat\n" +
                     "\n" +
-                    "Press the correspodnding digit key for the option you'd like to use"
+                    "Press the corresponding digit key for the option you'd like to use"
                     );
                 var input = Console.ReadKey().Key;
                 switch (input)
@@ -77,7 +73,7 @@ namespace _1DV607A2.View
             if (dataMode != DataMode.Create)
             {
                 if (selected == null)
-                    selected = SelectMember("Please select the member whose details you wish to edit:\n", displayMode);
+                    selected = SelectMember($"Please select the member whose details you wish to {(dataMode == DataMode.View ? "view" : "edit")}:\n", displayMode);
 
                 selectedData = (MemberData)DataController.RetrieveByID(selected);
             }
@@ -109,12 +105,15 @@ namespace _1DV607A2.View
                     }
                 case DataMode.View:
                     {
+                        Console.Clear();
                         Console.Write(
                             $"Member ID: {selectedData.ID}\n" +
                             $"Time of creation: {selectedData.Timestamp}\n\n" +
                             $"Name: {selectedData.Name}\n" +
                             $"Personal Number: {selectedData.PersonalNumber}\n" +
                             $"Boats: ({selectedData.Boats.Count})\n");
+                        foreach (BoatData boat in selectedData.Boats)
+                            Console.WriteLine($" - {boat.Length}m {boat.Type} (Boat ID: {boat.ID})");
 
                         Console.WriteLine("\nPress E to edit this - Press D to delete this - Any else to return to main menu...");
 
@@ -141,7 +140,7 @@ namespace _1DV607A2.View
             if (dataMode != DataMode.Create)
             {
                 if (selected == null)
-                    selected = SelectBoat("Please select the boat whose details you wish to edit:\n", displayMode);
+                    selected = SelectBoat($"Please select the boat whose details you wish to {(dataMode == DataMode.View?"view":"edit")}:\n");
 
                 selectedData = (BoatData)DataController.RetrieveByID(selected);
             }
@@ -158,7 +157,7 @@ namespace _1DV607A2.View
                         Console.Write("Specify length of vessel in metre (m):");
                         arguments.Add("length", int.Parse(Console.ReadLine()));
 
-                        var boatType = ListSelection<BoatType>("Please specify type of vessel", Enum.GetNames(typeof(BoatType)).ToList<object>());
+                        var boatType = Enum.Parse(typeof(BoatType), ListSelection<string>("Please specify type of vessel", Enum.GetNames(typeof(BoatType)).ToList<object>()));
                         arguments.Add("type", boatType);
 
                         if (dataMode == DataMode.Create)
@@ -169,12 +168,14 @@ namespace _1DV607A2.View
                     }
                 case DataMode.View:
                     {
+                        Console.Clear();
                         Console.Write(
-                            $"Member ID: {selectedData.ID}\n" +
+                            $"Boat ID: {selectedData.ID}\n" +
                             $"Time of creation: {selectedData.Timestamp}\n\n" +
                             $"Length: {selectedData.Length} metre\n" +
-                            $"Type: {selectedData.Type}\n" +
-                            $"Owner: {selectedData.Owner.Name} (M-ID: {selectedData.Owner.ID})\n");
+                            $"Type: {selectedData.Type}\n" + 
+                            ( selectedData.Owner == null ? $"Owner: Owner not found\n" :
+                            $"Owner: {selectedData.Owner.Name} (M-ID: {selectedData.Owner.ID})\n"));
 
                         Console.WriteLine("\nPress E to edit this - Press D to delete this - Any else to return to main menu...");
 
@@ -194,12 +195,12 @@ namespace _1DV607A2.View
 
         void ShowDeleteConfirmation(string selected)
         {
-            Console.WriteLine("Are you sure you want to delete this selection?");
+            Console.WriteLine("\nAre you sure you want to delete this selection? (y/n)");
             var response = ReadValidInput((s) =>
             {
                 s = s.ToLower();
-                return s == "y" || s == "n";
-            });
+                return !(s == "y" || s == "n");
+            }).ToLower();
 
             if (response == "y")
                 DataController.DeleteData(selected);
@@ -207,32 +208,22 @@ namespace _1DV607A2.View
 
         string SelectMember(string topMessage, ListDisplayMode listDisplay = ListDisplayMode.Compact)
         {
-            var members = DataController.RetrieveByQuery(d =>
-            {
-                if (d.GetType() == typeof(MemberData))
-                    return (MemberData)d;
-                else return null;
-            }).ToList<object>();
+            var members = DataController.RetrieveByQuery(d => d.GetType() == typeof(MemberData)).ToList<object>();
 
             return ListSelection<MemberData>(topMessage, members, listDisplay).ID;
         }
 
         string SelectBoat(string topMessage, ListDisplayMode listDisplay = ListDisplayMode.Compact)
         {
-            var boats = DataController.RetrieveByQuery(d =>
-            {
-                if (d.GetType() == typeof(BoatData))
-                    return (BoatData)d;
-                else return null;
-            }).ToList<object>();
+            var boats = DataController.RetrieveByQuery(d => d.GetType() == typeof(BoatData)).ToList<object>();
 
-            return ListSelection<MemberData>(topMessage, boats, listDisplay).ID;
+            return ListSelection<BoatData>(topMessage, boats, listDisplay).ID;
         }
 
         T ListSelection<T>(string topMessage, List<object> dataList, ListDisplayMode listDisplay = ListDisplayMode.Compact)
         {
             int selection = -1;
-            while (selection < dataList.Count() && selection >= 0)
+            while (selection >= dataList.Count() || selection < 0)
             {
                 Console.Clear();
                 Console.WriteLine(topMessage);
@@ -248,6 +239,9 @@ namespace _1DV607A2.View
         {
             foreach (object entry in list)
             {
+                if (entry == null)
+                    continue;
+
                 var line = $"{list.IndexOf(entry)} ";
 
                 if (entry.GetType() == typeof(MemberData))
@@ -264,7 +258,7 @@ namespace _1DV607A2.View
         string BoatToString(BoatData data, ListDisplayMode displayMode)
         {
             var owner = data.Owner;
-            return $"ID: {data.ID}, {data.Length}m {data.Type}, owned by {owner.Name} (ID: {owner.ID})":
+            return $"ID: {data.ID}, {data.Length}m {data.Type}, " + (owner == null ? "ownerless" :$" owned by {owner.Name} (ID: {owner.ID})");
         }
 
         string MemberToString(MemberData data, ListDisplayMode displayMode)

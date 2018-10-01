@@ -24,7 +24,7 @@ namespace _1DV607A2.Model
             if (newData.ContainsKey("length")) 
                 Length = (int)newData["length"];
 
-            if (newData.ContainsKey("type"));
+            if (newData.ContainsKey("type"))
                 Type = (BoatType)newData["type"];
         }
 
@@ -35,7 +35,7 @@ namespace _1DV607A2.Model
 
         public override string Serialize()
         {
-            return base.Serialize() + $":{Owner}:{Length}:{Type.ToString()}";
+            return base.Serialize() + $":{Owner.ID}:{Length}:{Type.ToString()}";
         }
     }
 }

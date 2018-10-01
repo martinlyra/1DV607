@@ -14,8 +14,11 @@ namespace _1DV607A2.Model
 
         public void RegisterBoat(BoatData boat)
         {
+            if (boat.Owner == this)
+                return;
             if (boat.Owner != this)
                 boat.Owner?.Boats.Remove(boat);
+
             boat.Owner = this;
             Boats.Add(boat);
         }
@@ -25,7 +28,7 @@ namespace _1DV607A2.Model
             if (newData.ContainsKey("name"))
                 Name = (string)newData["name"];
 
-            if (newData.ContainsKey("personl-num")) ;
+            if (newData.ContainsKey("personal-num"))
                 PersonalNumber = (string)newData["personal-num"];
         }
 
