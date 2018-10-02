@@ -27,6 +27,9 @@ namespace _1DV607A2.View
             DataController = new DataController();
         }
 
+        /// <summary>
+        /// Shows the main menu; the entry point of everything beyond Program.Main()
+        /// </summary>
         public void RunLoop()
         {
             //TODO: Add an draw and update loop for drawing the main menu and then reading input
@@ -64,6 +67,12 @@ namespace _1DV607A2.View
             }
         }
 
+        /// <summary>
+        /// Shows a context-sensitive menu for listing, viewing, creating, editing, or deleting members
+        /// </summary>
+        /// <param name="dataMode"></param>
+        /// <param name="displayMode"></param>
+        /// <param name="selectedID"></param>
         void ShowMemberMenu(DataMode dataMode, ListDisplayMode displayMode = ListDisplayMode.Compact, string selectedID = null)
         {
             Console.Clear();
@@ -113,7 +122,7 @@ namespace _1DV607A2.View
                             $"Personal Number: {selectedData.PersonalNumber}\n" +
                             $"Boats: ({selectedData.Boats.Count})\n");
                         foreach (BoatData boat in selectedData.Boats)
-                            Console.WriteLine($" - {boat.Length}m {boat.Type} (Boat ID: {boat.ID})");
+                            Console.WriteLine($" - {boat.Length}m {boat.BoatType} (Boat ID: {boat.ID})");
 
                         Console.WriteLine("\nPress E to edit this - Press D to delete this - Any else to return to main menu...");
 
@@ -131,6 +140,11 @@ namespace _1DV607A2.View
             }
         }
 
+        /// <summary>
+        /// Shows a context-sensitive menu for listing, viewing, creating, editing, or deleting boats
+        /// </summary>
+        /// <param name="dataMode"></param>
+        /// <param name="selectedID"></param>
         void ShowBoatMenu(DataMode dataMode, string selectedID = null)
         {
             Console.Clear();
@@ -158,7 +172,7 @@ namespace _1DV607A2.View
                         arguments.Add("length", int.Parse(Console.ReadLine()));
 
                         var boatType = Enum.Parse(typeof(BoatType), ListSelection<string>("Please specify type of vessel", Enum.GetNames(typeof(BoatType)).ToList<object>()));
-                        arguments.Add("type", boatType);
+                        arguments.Add("boat-type", boatType);
 
                         if (dataMode == DataMode.Create)
                             DataController.CreateData(typeof(BoatData), arguments);
@@ -173,7 +187,7 @@ namespace _1DV607A2.View
                             $"Boat ID: {selectedData.ID}\n" +
                             $"Time of creation: {selectedData.Timestamp}\n\n" +
                             $"Length: {selectedData.Length} metre\n" +
-                            $"Type: {selectedData.Type}\n" + 
+                            $"Type: {selectedData.BoatType}\n" + 
                             ( selectedData.Owner == null ? $"Owner: Owner not found\n" :
                             $"Owner: {selectedData.Owner.Name} (M-ID: {selectedData.Owner.ID})\n"));
 
@@ -193,6 +207,10 @@ namespace _1DV607A2.View
             }
         }
 
+        /// <summary>
+        /// Shows a confirmation dialog for deletion operations
+        /// </summary>
+        /// <param name="selected"></param>
         void ShowDeleteConfirmation(string selected)
         {
             Console.WriteLine("\nAre you sure you want to delete this selection? (y/n)");
@@ -206,6 +224,12 @@ namespace _1DV607A2.View
                 DataController.DeleteData(selected);
         }
 
+        /// <summary>
+        /// Shows a list of items that can be selected; special for Members
+        /// </summary>
+        /// <param name="topMessage"></param>
+        /// <param name="listDisplay"></param>
+        /// <returns></returns>
         string SelectMember(string topMessage, ListDisplayMode listDisplay = ListDisplayMode.Compact)
         {
             var members = DataController.RetrieveByQuery(d => d.GetType() == typeof(MemberData)).ToList<object>();
@@ -213,6 +237,12 @@ namespace _1DV607A2.View
             return ListSelection<MemberData>(topMessage, members, listDisplay).ID;
         }
 
+        /// <summary>
+        /// Shows a list of items that can be selected; special for Boats
+        /// </summary>>
+        /// <param name="topMessage"></param>
+        /// <param name="listDisplay"></param>
+        /// <returns></returns>
         string SelectBoat(string topMessage, ListDisplayMode listDisplay = ListDisplayMode.Compact)
         {
             var boats = DataController.RetrieveByQuery(d => d.GetType() == typeof(BoatData)).ToList<object>();
@@ -220,6 +250,14 @@ namespace _1DV607A2.View
             return ListSelection<BoatData>(topMessage, boats, listDisplay).ID;
         }
 
+        /// <summary>
+        /// Boilerplate function for showing a list with basic selection function
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="topMessage"></param>
+        /// <param name="dataList"></param>
+        /// <param name="listDisplay"></param>
+        /// <returns></returns>
         T ListSelection<T>(string topMessage, List<object> dataList, ListDisplayMode listDisplay = ListDisplayMode.Compact)
         {
             int selection = -1;
@@ -235,6 +273,11 @@ namespace _1DV607A2.View
             return (T)dataList.ElementAt(selection);
         }
 
+        /// <summary>
+        /// Helper function for printing lists
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="displayMode"></param>
         void PrintList(List<object> list, ListDisplayMode displayMode)
         {
             foreach (object entry in list)
@@ -255,12 +298,24 @@ namespace _1DV607A2.View
             }
         }
 
+        /// <summary>
+        /// Helper function for reading BoatData to a human-readable string
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="displayMode"></param>
+        /// <returns></returns>
         string BoatToString(BoatData data, ListDisplayMode displayMode)
         {
             var owner = data.Owner;
-            return $"ID: {data.ID}, {data.Length}m {data.Type}, " + (owner == null ? "ownerless" :$" owned by {owner.Name} (ID: {owner.ID})");
+            return $"ID: {data.ID}, {data.Length}m {data.BoatType}, " + (owner == null ? "ownerless" :$" owned by {owner.Name} (ID: {owner.ID})");
         }
 
+        /// <summary>
+        /// Helper function for reading MemberData to a human-readable string
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="displayMode"></param>
+        /// <returns></returns>
         string MemberToString(MemberData data, ListDisplayMode displayMode)
         {
             string result = "";
@@ -268,7 +323,7 @@ namespace _1DV607A2.View
             {
                 result += $"{data.Name}, PN: {data.PersonalNumber} ID: {data.ID}, Boats;\n";
                 foreach (BoatData boat in data.Boats)
-                    result += $"   {boat.Length}m {boat.Type} (ID: {boat.ID})\n";
+                    result += $"   {boat.Length}m {boat.BoatType} (ID: {boat.ID})\n";
             }
             else
                 result += $"{data.Name}, ID: {data.ID}, {data.Boats.Count} boat(s)";
@@ -276,6 +331,11 @@ namespace _1DV607A2.View
             return result;
         }
 
+        /// <summary>
+        /// Reads console input, repeats until the filter deems the input to be acceptable
+        /// </summary>
+        /// <param name="filterFunction"></param>
+        /// <returns></returns>
         string ReadValidInput(Func<string, bool> filterFunction)
         {
             string input = Console.ReadLine();

@@ -4,13 +4,15 @@ namespace _1DV607A2
 {
     class Program
     {
+        static SimpleUserInterface userInterface;
+
         static void Main(string[] args)
         {
-            var ui = new SimpleUserInterface();
+            userInterface = new SimpleUserInterface();
 
-            while (!ui.IsExiting)
+            while (!userInterface.IsExiting)
             {
-                ui.RunLoop();
+                userInterface.RunLoop();
             }
         }
     }

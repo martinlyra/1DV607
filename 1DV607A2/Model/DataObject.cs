@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace _1DV607A2.Model
 {
+    /// <summary>
+    /// Abstract model for data objects
+    /// </summary>
     public abstract class DataObject
     {
         protected readonly DataController dataController;
@@ -14,7 +17,11 @@ namespace _1DV607A2.Model
             Timestamp = timestamp;
         }
 
-        public virtual void ChangeData(Dictionary<string, object> newData)
+        /// <summary>
+        /// Bulk-change data using dictionaries
+        /// </summary>
+        /// <param name="newData"></param>
+        public virtual void SetNewData(Dictionary<string, object> newData)
         {
             if (newData.ContainsKey("id"))
                 ID = (string)newData["id"];
@@ -22,8 +29,15 @@ namespace _1DV607A2.Model
                 Timestamp = (long)newData["timestamp"];
         }
 
+        /// <summary>
+        /// Function for handling deletion of objects, for proper clean object-oriented structure
+        /// </summary>
         public abstract void Delete();
 
+        /// <summary>
+        /// Serializes the object; saving the data down to a string that can be used in sharing over medium or saving to disk
+        /// </summary>
+        /// <returns></returns>
         public virtual string Serialize()
         {
             return $"{DataType}:{ID}:{Timestamp}";

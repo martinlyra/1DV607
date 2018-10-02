@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="_1DV607A2.Controller.DataController">
+    <Position X="12.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAACAAAABAAAEAACAAQAECAAAA=</HashCode>
+      <FileName>Controller\DataController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="dataObjects" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="_1DV607A2.Controller.DataFileController">
+    <Position X="12.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAARAgBAAQAAAIAAAAAAAAAAAAAAAAAAQAAAAABAQ=</HashCode>
+      <FileName>Controller\DataFileController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="dataController" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="_1DV607A2.Model.BoatData">
+    <Position X="14.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAABAADEAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Model\BoatData.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="BoatType" />
+      <Property Name="Owner" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="_1DV607A2.Model.DataObject">
+    <Position X="15.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAgAAIAAACAAAAADEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\DataObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="_1DV607A2.Model.MemberData">
+    <Position X="16.75" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAQAATEAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Model\MemberData.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Boats" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="_1DV607A2.View.SimpleUserInterface">
+    <Position X="9.75" Y="7" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="_1DV607A2.View.SimpleUserInterface.ListDisplayMode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>View\SimpleUserInterface.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="_1DV607A2.View.SimpleUserInterface.DataMode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>View\SimpleUserInterface.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAhAAAAAgAAAAAAIBAIAIAAAAAQAQABAgEAAAAABA=</HashCode>
+      <FileName>View\SimpleUserInterface.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DataController" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="_1DV607A2.Program">
+    <Position X="6.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="userInterface" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="_1DV607A2.Model.BoatType">
+    <Position X="14.5" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAgCAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Model\BoatType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

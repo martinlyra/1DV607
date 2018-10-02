@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace _1DV607A2.Model
 {
+    /// <summary>
+    /// Data object model for storing member data
+    /// </summary>
     public class MemberData : DataObject
     {
         public MemberData(DataController dataController, string id, long timestamp) : base(dataController, id, timestamp)
@@ -12,6 +15,10 @@ namespace _1DV607A2.Model
             Boats = new List<BoatData>();
         }
 
+        /// <summary>
+        /// Registers a boat on this member; filling the appropriate details for the boat
+        /// </summary>
+        /// <param name="boat"></param>
         public void RegisterBoat(BoatData boat)
         {
             if (boat.Owner == this)
@@ -23,7 +30,7 @@ namespace _1DV607A2.Model
             Boats.Add(boat);
         }
 
-        public override void ChangeData(Dictionary<string, object> newData)
+        public override void SetNewData(Dictionary<string, object> newData)
         {
             if (newData.ContainsKey("name"))
                 Name = (string)newData["name"];

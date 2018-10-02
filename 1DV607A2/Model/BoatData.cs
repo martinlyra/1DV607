@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace _1DV607A2.Model
 {
+    /// <summary>
+    /// Data object model for storing information about boats
+    /// </summary>
     public class BoatData : DataObject
     {
         public BoatData(DataController dataController, string id, long timestamp) : base(dataController, id, timestamp)
@@ -12,9 +15,9 @@ namespace _1DV607A2.Model
 
         public MemberData Owner { get; set; }
         public int Length { get; set; }
-        public BoatType Type { get; set; }
+        public BoatType BoatType { get; set; }
 
-        public override void ChangeData(Dictionary<string, object> newData)
+        public override void SetNewData(Dictionary<string, object> newData)
         {
             if (newData.ContainsKey("owner"))
             {
@@ -24,8 +27,8 @@ namespace _1DV607A2.Model
             if (newData.ContainsKey("length")) 
                 Length = (int)newData["length"];
 
-            if (newData.ContainsKey("type"))
-                Type = (BoatType)newData["type"];
+            if (newData.ContainsKey("boat-type"))
+                BoatType = (BoatType)newData["boat-type"];
         }
 
         public override void Delete()
@@ -35,7 +38,7 @@ namespace _1DV607A2.Model
 
         public override string Serialize()
         {
-            return base.Serialize() + $":{Owner.ID}:{Length}:{Type.ToString()}";
+            return base.Serialize() + $":{Owner.ID}:{Length}:{BoatType.ToString()}";
         }
     }
 }

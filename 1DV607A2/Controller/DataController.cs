@@ -19,6 +19,11 @@ namespace _1DV607A2.Controller
             fileController.TryLoadAll(ref dataObjects);
         }
 
+        /// <summary>
+        /// Creates DataObject, specify model by specifying Type inheriting DataObject. Initialize its data using a dictionary list.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="args"></param>
         public void CreateData(Type type, Dictionary<string, object> args)
         {
             var time = DateTime.UtcNow.Ticks;
@@ -28,19 +33,28 @@ namespace _1DV607A2.Controller
 
             if (data != null)
             {
-                data.ChangeData(args);
+                data.SetNewData(args);
                 dataObjects.Add(data);
                 fileController.SaveToFile(data);
             }
         }
 
+        /// <summary>
+        /// Changes an object's data using a dictionary list
+        /// </summary>
+        /// <param name="targetID"></param>
+        /// <param name="args"></param>
         public void ChangeData(string targetID, Dictionary<string, object> args)
         {
             var obj = RetrieveByID(targetID);
-            obj.ChangeData(args);
+            obj.SetNewData(args);
             fileController.SaveToFile(obj);
         }
 
+        /// <summary>
+        /// Deletes an object from both the registry and disk
+        /// </summary>
+        /// <param name="targetID"></param>
         public void DeleteData(string targetID)
         {
             var obj = RetrieveByID(targetID);
@@ -52,16 +66,31 @@ namespace _1DV607A2.Controller
             }
         }
 
+        /// <summary>
+        /// Returns an object by its ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public DataObject RetrieveByID(string id)
         {
             return dataObjects.Find(data => { return data.ID == id; });
         }
 
+        /// <summary>
+        /// Returns an list of objects that satisfy the given boolean selector function
+        /// </summary>
+        /// <param name="selectorFunction"></param>
+        /// <returns></returns>
         public IEnumerable<DataObject> RetrieveByQuery(Func<DataObject,bool> selectorFunction) 
         {
             return dataObjects.Where(selectorFunction);
         }
 
+        /// <summary>
+        /// Calculates an unique hash-like identifiers from given dictionary list
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         private long CalculateHashID(Dictionary<string, object> args)
         {
             long result = 1;
