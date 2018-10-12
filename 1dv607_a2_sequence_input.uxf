@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>0</x>
+      <y>0</y>
+      <w>2860</w>
+      <h>890</h>
+    </coordinates>
+    <panel_attributes>title=
+autoTick=true
+obj=userInterface:\nSimpleUserInterface~a 
+obj=dataController:\nDataController~b 
+obj=dataObjects:\nList&lt;DataObject&gt;~e
+obj=fileController:\nDataFileController~c
+obj=dataObject:\nMemberData~d
+found-&gt;&gt;&gt;a :RunLoop(); on=a
+a-&gt;&gt;&gt;a + :ShowMemberMenu(dataMode, ...)
+on=a
+combinedFragment=if (dataMode = DataMode.Create)~if1 a d
+a-&gt;&gt;&gt;b :CreateData(); on=b
+b-&gt;&gt;&gt;b + :CalculateHashID();on=b
+off=b;
+b-&gt;&gt;&gt;d :Invoked constructor function (new MemberData());on=d;
+d.&gt;b :&lt;return&gt;; off=d
+combinedFragment=if (dataObject != null)~if2 b d
+b-&gt;&gt;&gt;d: SetNewData(); on=d
+d.&gt;b; off=d
+b-&gt;&gt;&gt;e :Add(); on=e
+e.&gt;b; off=e
+b-&gt;&gt;&gt;c :SaveToFile(); on=c
+c-&gt;&gt;&gt;d :Serialize(); on=d
+d.&gt;c :&lt;return&gt;; off=d 
+c.&gt;b; off=c
+--=if2
+b.&gt;a; off=b;
+--=if1
+off=a;
+off=a
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

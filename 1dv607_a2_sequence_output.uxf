@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>0</x>
+      <y>80</y>
+      <w>1690</w>
+      <h>780</h>
+    </coordinates>
+    <panel_attributes>title=
+autoTick=true
+obj=userInterface:\nSimpleUserInterface~a 
+obj=dataController:\nDataController~b 
+obj=dataObjects:\nList&lt;DataObject&gt;~c
+found-&gt;&gt;&gt;a :RunLoop(); on=a
+a-&gt;&gt;&gt;a + :ShowMemberMenu(dataMode, ...)
+on=a
+combinedFragment=if (dataMode != DataMode.Create)~if2 a c
+a-&gt;&gt;&gt;a + :SelectMember()
+on=a
+a-&gt;&gt;&gt;b :RetrieveByQuery(); on=b
+b-&gt;&gt;&gt;c :Where(); on=c
+c.&gt;b; off=c
+b.&gt;a; off=b
+a-&gt;&gt;&gt;a + :ListSelection()
+on=a
+off=a
+off=a
+--=if2
+combinedFragment=if (dataMode == DataMode.View)~if1 a b
+a-&gt;&gt;&gt;b :RetrieveByID(); on=b
+
+
+b.&gt;a; off=b;
+--=if1
+off=a;
+off=a
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
