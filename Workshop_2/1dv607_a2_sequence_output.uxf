@@ -5,9 +5,9 @@
     <id>UMLSequenceAllInOne</id>
     <coordinates>
       <x>0</x>
-      <y>80</y>
+      <y>0</y>
       <w>1690</w>
-      <h>780</h>
+      <h>830</h>
     </coordinates>
     <panel_attributes>title=
 autoTick=true
@@ -20,9 +20,11 @@ on=a
 combinedFragment=if (dataMode != DataMode.Create)~if2 a c
 a-&gt;&gt;&gt;a + :SelectMember()
 on=a
-a-&gt;&gt;&gt;b :RetrieveByQuery(); on=b
+a-&gt;&gt;&gt;b :GetMembers(); on=b
+b-&gt;&gt;&gt;b +:RetrieveByQuery()
+on=b;
 b-&gt;&gt;&gt;c :Where(); on=c
-c.&gt;b; off=c
+c.&gt;b; off=c; off=b;
 b.&gt;a; off=b
 a-&gt;&gt;&gt;a + :ListSelection()
 on=a
@@ -36,7 +38,7 @@ a-&gt;&gt;&gt;b :RetrieveByID(); on=b
 b.&gt;a; off=b;
 --=if1
 off=a;
-off=a
+a.&gt;lost; off=a
 
 
 </panel_attributes>

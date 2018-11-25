@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeIdentifiers>win10-x64;osx.10.11-x64;ubuntu.16.10-x64</RuntimeIdentifiers>
+    <RootNamespace>_1DV607A2</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Saved Data\Boats\" />
+    <Folder Include="Saved Data\Members\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Saved Data\Boats\807eca62-ab82-4f88-82cb-60c4788376e3.data">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Saved Data\Members\0bea2d27-c11f-4a64-974e-c18de3b3590d.data">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
